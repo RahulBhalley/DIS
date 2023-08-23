@@ -42,6 +42,7 @@ def get_gt_encoder(train_dataloaders, train_datasets, valid_dataloaders, valid_d
         if torch.cuda.is_available():
             net.load_state_dict(torch.load(model_path))
             net.cuda()
+            print("Put ISNetGTEncoder on CUDA.")
         else:
             net.load_state_dict(torch.load(model_path,map_location="cpu"))
         print("gt encoder restored from the saved weights ...")
@@ -582,6 +583,7 @@ def main(train_datasets,
 
     if torch.cuda.is_available():
         net.cuda()
+        print("Put net on CUDA.")
 
     if(hypar["restore_model"]!=""):
         print("restore model from:")
