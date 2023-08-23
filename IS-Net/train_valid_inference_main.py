@@ -639,7 +639,7 @@ if __name__ == "__main__":
     #              "gt_ext": ".png",
     #              "cache_dir":"../DIS5K-Cache/DIS-VD"}
     
-    dataset_vd = {"name": "DIS5K-VD",
+    dataset_vd = {"name": "P3M-10K-VD",
                  "im_dir": "/kaggle/input/p3m-10k/P3M-10k/validation/P3M-500-NP/original_image",
                  "gt_dir": "/kaggle/input/p3m-10k/P3M-10k/validation/P3M-500-NP/mask",
                  "im_ext": ".jpg",
