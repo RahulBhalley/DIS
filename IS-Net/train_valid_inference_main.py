@@ -624,14 +624,26 @@ if __name__ == "__main__":
     #              "im_ext": ".jpg",
     #              "gt_ext": ".png",
     #              "cache_dir":"../DIS5K-Cache/DIS-TR"}
+
+    # Kaggle
+    # dataset_tr = {"name": "P3M-10K-TR",
+    #              "im_dir": "/kaggle/input/p3m-10k/P3M-10k/train/blurred_image",
+    #              "gt_dir": "/kaggle/input/p3m-10k/P3M-10k/train/mask",
+    #              "im_ext": ".jpg",
+    #              "gt_ext": ".png",
+    #              "cache_dir":"../P3M-10K-TR-Cache/P3M-10K-TR"
+    #              }
+
+    # RunPod
     dataset_tr = {"name": "P3M-10K-TR",
-                 "im_dir": "/kaggle/input/p3m-10k/P3M-10k/train/blurred_image",
-                 "gt_dir": "/kaggle/input/p3m-10k/P3M-10k/train/mask",
+                 "im_dir": "/workspace/P3M-10k/train/blurred_image",
+                 "gt_dir": "/workspace/P3M-10k/train/mask",
                  "im_ext": ".jpg",
                  "gt_ext": ".png",
-                 "cache_dir":"../P3M-10K-TR-Cache/P3M-10K-TR"
+                 "cache_dir":"/workspace/P3M-10K-TR-Cache/P3M-10K-TR"
                  }
 
+    # Kaggle
     # dataset_vd = {"name": "DIS5K-VD",
     #              "im_dir": "../DIS5K/DIS-VD/im",
     #              "gt_dir": "../DIS5K/DIS-VD/gt",
@@ -639,12 +651,13 @@ if __name__ == "__main__":
     #              "gt_ext": ".png",
     #              "cache_dir":"../DIS5K-Cache/DIS-VD"}
     
+    # RunPod
     dataset_vd = {"name": "P3M-10K-VD",
-                 "im_dir": "/kaggle/input/p3m-10k/P3M-10k/validation/P3M-500-NP/original_image",
-                 "gt_dir": "/kaggle/input/p3m-10k/P3M-10k/validation/P3M-500-NP/mask",
+                 "im_dir": "/workspace/P3M-10k/validation/P3M-500-NP/original_image",
+                 "gt_dir": "/workspace/P3M-10k/validation/P3M-500-NP/mask",
                  "im_ext": ".jpg",
                  "gt_ext": ".png",
-                 "cache_dir":"../P3M-10K-VD-Cache/P3M-10K-VD"
+                 "cache_dir":"/workspace/P3M-10K-VD-Cache/P3M-10K-VD"
                  }
 
     # dataset_te1 = {"name": "DIS5K-TE1",
