@@ -618,54 +618,69 @@ if __name__ == "__main__":
     train_datasets, valid_datasets = [], []
     dataset_1, dataset_1 = {}, {}
 
-    dataset_tr = {"name": "DIS5K-TR",
-                 "im_dir": "../DIS5K/DIS-TR/im",
-                 "gt_dir": "../DIS5K/DIS-TR/gt",
+    # dataset_tr = {"name": "DIS5K-TR",
+    #              "im_dir": "../DIS5K/DIS-TR/im",
+    #              "gt_dir": "../DIS5K/DIS-TR/gt",
+    #              "im_ext": ".jpg",
+    #              "gt_ext": ".png",
+    #              "cache_dir":"../DIS5K-Cache/DIS-TR"}
+    dataset_tr = {"name": "P3M-10K-TR",
+                 "im_dir": "/kaggle/input/p3m-10k/P3M-10k/train/blurred_image",
+                 "gt_dir": "/kaggle/input/p3m-10k/P3M-10k/train/mask",
                  "im_ext": ".jpg",
                  "gt_ext": ".png",
-                 "cache_dir":"../DIS5K-Cache/DIS-TR"}
+                #  "cache_dir":"../DIS5K-Cache/DIS-TR"
+                 }
 
+    # dataset_vd = {"name": "DIS5K-VD",
+    #              "im_dir": "../DIS5K/DIS-VD/im",
+    #              "gt_dir": "../DIS5K/DIS-VD/gt",
+    #              "im_ext": ".jpg",
+    #              "gt_ext": ".png",
+    #              "cache_dir":"../DIS5K-Cache/DIS-VD"}
+    
     dataset_vd = {"name": "DIS5K-VD",
-                 "im_dir": "../DIS5K/DIS-VD/im",
-                 "gt_dir": "../DIS5K/DIS-VD/gt",
+                 "im_dir": "/kaggle/input/p3m-10k/P3M-10k/validation/P3M-500-NP/original_image",
+                 "gt_dir": "/kaggle/input/p3m-10k/P3M-10k/validation/P3M-500-NP/mask",
                  "im_ext": ".jpg",
                  "gt_ext": ".png",
-                 "cache_dir":"../DIS5K-Cache/DIS-VD"}
+                #  "cache_dir":"../DIS5K-Cache/DIS-VD"
+                 }
 
-    dataset_te1 = {"name": "DIS5K-TE1",
-                 "im_dir": "../DIS5K/DIS-TE1/im",
-                 "gt_dir": "../DIS5K/DIS-TE1/gt",
-                 "im_ext": ".jpg",
-                 "gt_ext": ".png",
-                 "cache_dir":"../DIS5K-Cache/DIS-TE1"}
+    # dataset_te1 = {"name": "DIS5K-TE1",
+    #              "im_dir": "../DIS5K/DIS-TE1/im",
+    #              "gt_dir": "../DIS5K/DIS-TE1/gt",
+    #              "im_ext": ".jpg",
+    #              "gt_ext": ".png",
+    #              "cache_dir":"../DIS5K-Cache/DIS-TE1"}
 
-    dataset_te2 = {"name": "DIS5K-TE2",
-                 "im_dir": "../DIS5K/DIS-TE2/im",
-                 "gt_dir": "../DIS5K/DIS-TE2/gt",
-                 "im_ext": ".jpg",
-                 "gt_ext": ".png",
-                 "cache_dir":"../DIS5K-Cache/DIS-TE2"}
+    # dataset_te2 = {"name": "DIS5K-TE2",
+    #              "im_dir": "../DIS5K/DIS-TE2/im",
+    #              "gt_dir": "../DIS5K/DIS-TE2/gt",
+    #              "im_ext": ".jpg",
+    #              "gt_ext": ".png",
+    #              "cache_dir":"../DIS5K-Cache/DIS-TE2"}
 
-    dataset_te3 = {"name": "DIS5K-TE3",
-                 "im_dir": "../DIS5K/DIS-TE3/im",
-                 "gt_dir": "../DIS5K/DIS-TE3/gt",
-                 "im_ext": ".jpg",
-                 "gt_ext": ".png",
-                 "cache_dir":"../DIS5K-Cache/DIS-TE3"}
+    # dataset_te3 = {"name": "DIS5K-TE3",
+    #              "im_dir": "../DIS5K/DIS-TE3/im",
+    #              "gt_dir": "../DIS5K/DIS-TE3/gt",
+    #              "im_ext": ".jpg",
+    #              "gt_ext": ".png",
+    #              "cache_dir":"../DIS5K-Cache/DIS-TE3"}
 
-    dataset_te4 = {"name": "DIS5K-TE4",
-                 "im_dir": "../DIS5K/DIS-TE4/im",
-                 "gt_dir": "../DIS5K/DIS-TE4/gt",
-                 "im_ext": ".jpg",
-                 "gt_ext": ".png",
-                 "cache_dir":"../DIS5K-Cache/DIS-TE4"}
-    ### test your own dataset
-    dataset_demo = {"name": "your-dataset",
-                 "im_dir": "../your-dataset/im",
-                 "gt_dir": "",
-                 "im_ext": ".jpg",
-                 "gt_ext": "",
-                 "cache_dir":"../your-dataset/cache"}
+    # dataset_te4 = {"name": "DIS5K-TE4",
+    #              "im_dir": "../DIS5K/DIS-TE4/im",
+    #              "gt_dir": "../DIS5K/DIS-TE4/gt",
+    #              "im_ext": ".jpg",
+    #              "gt_ext": ".png",
+    #              "cache_dir":"../DIS5K-Cache/DIS-TE4"}
+    # ### test your own dataset
+    # dataset_demo = {"name": "your-dataset",
+    #              "im_dir": "../your-dataset/im",
+    #              "gt_dir": "",
+    #              "im_ext": ".jpg",
+    #              "gt_ext": "",
+    #              "cache_dir":"../your-dataset/cache"}
 
     train_datasets = [dataset_tr] ## users can create mutiple dictionary for setting a list of datasets as training set
     # valid_datasets = [dataset_vd] ## users can create mutiple dictionary for setting a list of datasets as vaidation sets or inference sets
