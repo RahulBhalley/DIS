@@ -629,7 +629,7 @@ if __name__ == "__main__":
                  "gt_dir": "/kaggle/input/p3m-10k/P3M-10k/train/mask",
                  "im_ext": ".jpg",
                  "gt_ext": ".png",
-                #  "cache_dir":"../DIS5K-Cache/DIS-TR"
+                 "cache_dir":"../P3M-10K-TR-Cache/P3M-10K-TR"
                  }
 
     # dataset_vd = {"name": "DIS5K-VD",
@@ -644,7 +644,7 @@ if __name__ == "__main__":
                  "gt_dir": "/kaggle/input/p3m-10k/P3M-10k/validation/P3M-500-NP/mask",
                  "im_ext": ".jpg",
                  "gt_ext": ".png",
-                #  "cache_dir":"../DIS5K-Cache/DIS-VD"
+                 "cache_dir":"../P3M-10K-VD-Cache/P3M-10K-VD"
                  }
 
     # dataset_te1 = {"name": "DIS5K-TE1",
