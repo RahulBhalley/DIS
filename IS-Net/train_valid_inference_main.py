@@ -18,7 +18,7 @@ from models import *
 
 device = 'cuda' if torch.cuda.is_available() else 'cpu'
 
-def get_gt_encoder(train_dataloaders, train_datasets, valid_dataloaders, valid_datasets, hypar, train_dataloaders_val, train_datasets_val): #model_path, model_save_fre, max_ite=1000000):
+def get_gt_encoder(train_dataloaders, train_datasets, valid_dataloaders, valid_datasets, hypar, train_dataloaders_val, train_datasets_val, writer: SummaryWriter): #model_path, model_save_fre, max_ite=1000000):
 
     # train_dataloaders, train_datasets = create_dataloaders(train_nm_im_gt_list,
     #                                                      cache_size = hypar["cache_size"],
@@ -126,6 +126,11 @@ def get_gt_encoder(train_dataloaders, train_datasets, valid_dataloaders, valid_d
 
             print("GT Encoder Training>>>"+model_path.split('/')[-1]+" - [epoch: %3d/%3d, batch: %5d/%5d, ite: %d] train loss: %3f, tar: %3f, time-per-iter: %3f s, time_read: %3f" % (
             epoch + 1, epoch_num, (i + 1) * batch_size_train, train_num, ite_num, running_loss / ite_num4val, running_tar_loss / ite_num4val, time.time()-start_last, time.time()-start_last-end_inf_loss_back))
+            
+            # Log train losses in TensorBoard
+            writer.add_scalar("Loss-GT-Enc/train", running_loss / ite_num4val, ite_num)
+            writer.add_scalar("Loss-GT-Enc/train_tar", running_tar_loss / ite_num4val, ite_num)
+            
             start_last = time.time()
 
             if ite_num % model_save_fre == 0:  # validate every 2000 iterations
@@ -133,6 +138,10 @@ def get_gt_encoder(train_dataloaders, train_datasets, valid_dataloaders, valid_d
                 # net.eval()
                 # tmp_f1, tmp_mae, val_loss, tar_loss, i_val, tmp_time = valid_gt_encoder(net, valid_dataloaders, valid_datasets, hypar, epoch)
                 tmp_f1, tmp_mae, val_loss, tar_loss, i_val, tmp_time = valid_gt_encoder(net, train_dataloaders_val, train_datasets_val, hypar, epoch)
+
+                # Log val losses in TensorBoard
+                writer.add_scalar("Loss-GT-Enc/val", val_loss, ite_num)
+                writer.add_scalar("Loss-GT-Enc/val_tar", tar_loss, ite_num)
 
                 net.train()  # resume train
 
@@ -288,7 +297,7 @@ def train(net, optimizer, train_dataloaders, train_datasets, valid_dataloaders, 
 
     if hypar["interm_sup"]:
         print("Get the gt encoder ...")
-        featurenet = get_gt_encoder(train_dataloaders, train_datasets, valid_dataloaders, valid_datasets, hypar,train_dataloaders_val, train_datasets_val)
+        featurenet = get_gt_encoder(train_dataloaders, train_datasets, valid_dataloaders, valid_datasets, hypar,train_dataloaders_val, train_datasets_val, writer=writer)
         ## freeze the weights of gt encoder
         for param in featurenet.parameters():
             param.requires_grad=False
@@ -376,8 +385,8 @@ def train(net, optimizer, train_dataloaders, train_datasets, valid_dataloaders, 
             epoch + 1, epoch_num, (i + 1) * batch_size_train, train_num, ite_num, running_loss / ite_num4val, running_tar_loss / ite_num4val, time.time()-start_last, time.time()-start_last-end_inf_loss_back))
 
             # Log train losses in TensorBoard
-            writer.add_scalar("Loss/train", running_loss / ite_num4val, ite_num)
-            writer.add_scalar("Loss/train_tar", running_tar_loss / ite_num4val, ite_num)
+            writer.add_scalar("Loss-ISNet/train", running_loss / ite_num4val, ite_num)
+            writer.add_scalar("Loss-ISNet/train_tar", running_tar_loss / ite_num4val, ite_num)
 
             start_last = time.time()
 
@@ -387,8 +396,8 @@ def train(net, optimizer, train_dataloaders, train_datasets, valid_dataloaders, 
                 tmp_f1, tmp_mae, val_loss, tar_loss, i_val, tmp_time = valid(net, valid_dataloaders, valid_datasets, hypar, epoch)
 
                 # Log val losses in TensorBoard
-                writer.add_scalar("Loss/val", val_loss, ite_num)
-                writer.add_scalar("Loss/val_tar", tar_loss, ite_num)
+                writer.add_scalar("Loss-ISNet/val", val_loss, ite_num)
+                writer.add_scalar("Loss-ISNet/val_tar", tar_loss, ite_num)
 
                 net.train()  # resume train
 
