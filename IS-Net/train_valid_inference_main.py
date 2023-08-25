@@ -3,6 +3,7 @@ import time
 import numpy as np
 from skimage import io
 import time
+import argparse
 
 import torch, gc
 import torch.nn as nn
@@ -628,6 +629,12 @@ def main(train_datasets,
 
 if __name__ == "__main__":
 
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--restore_model', type=str, default='')
+    parser.add_argument('--start_ite', type=int, default=0)
+
+    args = parser.parse_args()
+
     ### --------------- STEP 1: Configuring the Train, Valid and Test datasets ---------------
     ## configure the train, valid and inference datasets
     train_datasets, valid_datasets = [], []
@@ -728,8 +735,10 @@ if __name__ == "__main__":
     if hypar["mode"] == "train":
         hypar["valid_out_dir"] = "" ## for "train" model leave it as "", for "valid"("inference") mode: set it according to your local directory
         hypar["model_path"] ="../saved_models/IS-Net-test" ## model weights saving (or restoring) path
-        hypar["restore_model"] = "isnet-general-use.pth" ## name of the segmentation model weights .pth for resume training process from last stop or for the inferencing
-        hypar["start_ite"] = 0 ## start iteration for the training, can be changed to match the restored training process
+        # hypar["restore_model"] = "isnet-general-use.pth" ## name of the segmentation model weights .pth for resume training process from last stop or for the inferencing
+        hypar["restore_model"] = args.restore_model ## name of the segmentation model weights .pth for resume training process from last stop or for the inferencing
+        # hypar["start_ite"] = 0 ## start iteration for the training, can be changed to match the restored training process
+        hypar["start_ite"] = args.start_ite ## start iteration for the training, can be changed to match the restored training process
         hypar["gt_encoder_model"] = ""
         print(hypar["restore_model"])
     else: ## configure the segmentation output path and the to-be-used model weights path
