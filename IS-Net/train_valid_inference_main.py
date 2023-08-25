@@ -140,8 +140,8 @@ def get_gt_encoder(train_dataloaders, train_datasets, valid_dataloaders, valid_d
                 tmp_f1, tmp_mae, val_loss, tar_loss, i_val, tmp_time = valid_gt_encoder(net, train_dataloaders_val, train_datasets_val, hypar, epoch)
 
                 # Log val losses in TensorBoard
-                writer.add_scalar("Loss-GT-Enc/val", val_loss, ite_num)
-                writer.add_scalar("Loss-GT-Enc/val_tar", tar_loss, ite_num)
+                writer.add_scalar("Loss-GT-Enc/val", np.round(val_loss /(i_val+1),4), ite_num)
+                writer.add_scalar("Loss-GT-Enc/val_tar", np.round(tar_loss /(i_val+1),4), ite_num)
 
                 net.train()  # resume train
 
@@ -396,8 +396,8 @@ def train(net, optimizer, train_dataloaders, train_datasets, valid_dataloaders, 
                 tmp_f1, tmp_mae, val_loss, tar_loss, i_val, tmp_time = valid(net, valid_dataloaders, valid_datasets, hypar, epoch)
 
                 # Log val losses in TensorBoard
-                writer.add_scalar("Loss-ISNet/val", val_loss, ite_num)
-                writer.add_scalar("Loss-ISNet/val_tar", tar_loss, ite_num)
+                writer.add_scalar("Loss-ISNet/val", np.round(val_loss /(i_val+1),4), ite_num)
+                writer.add_scalar("Loss-ISNet/val_tar", np.round(tar_loss /(i_val+1),4), ite_num)
 
                 net.train()  # resume train
 
