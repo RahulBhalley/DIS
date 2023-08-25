@@ -9,6 +9,7 @@ import torch.nn as nn
 from torch.autograd import Variable
 import torch.optim as optim
 import torch.nn.functional as F
+from torch.utils.tensorboard import SummaryWriter
 
 from data_loader_cache import get_im_gt_name_dict, create_dataloaders, GOSRandomHFlip, GOSResize, GOSRandomCrop, GOSNormalize #GOSDatasetCache,
 from basics import  f1_mae_torch #normPRED, GOSPRF1ScoresCache,f1score_torch,
@@ -282,7 +283,7 @@ def valid_gt_encoder(net, valid_dataloaders, valid_datasets, hypar, epoch=0):
 
     return tmp_f1, tmp_mae, val_loss, tar_loss, i_val, tmp_time
 
-def train(net, optimizer, train_dataloaders, train_datasets, valid_dataloaders, valid_datasets, hypar,train_dataloaders_val, train_datasets_val): #model_path, model_save_fre, max_ite=1000000):
+def train(net, optimizer, train_dataloaders, train_datasets, valid_dataloaders, valid_datasets, hypar,train_dataloaders_val, train_datasets_val, writer: SummaryWriter): #model_path, model_save_fre, max_ite=1000000):
 
     if hypar["interm_sup"]:
         print("Get the gt encoder ...")
@@ -372,12 +373,22 @@ def train(net, optimizer, train_dataloaders, train_datasets, valid_dataloaders, 
 
             print(">>>"+model_path.split('/')[-1]+" - [epoch: %3d/%3d, batch: %5d/%5d, ite: %d] train loss: %3f, tar: %3f, time-per-iter: %3f s, time_read: %3f" % (
             epoch + 1, epoch_num, (i + 1) * batch_size_train, train_num, ite_num, running_loss / ite_num4val, running_tar_loss / ite_num4val, time.time()-start_last, time.time()-start_last-end_inf_loss_back))
+
+            # Log train losses in TensorBoard
+            writer.add_scalar("Loss/train", running_loss / ite_num4val, ite_num)
+            writer.add_scalar("Loss/train_tar", running_tar_loss / ite_num4val, ite_num)
+
             start_last = time.time()
 
             if ite_num % model_save_fre == 0:  # validate every 2000 iterations
                 notgood_cnt += 1
                 net.eval()
                 tmp_f1, tmp_mae, val_loss, tar_loss, i_val, tmp_time = valid(net, valid_dataloaders, valid_datasets, hypar, epoch)
+
+                # Log val losses in TensorBoard
+                writer.add_scalar("Loss/val", val_loss, ite_num)
+                writer.add_scalar("Loss/val_tar", tar_loss, ite_num)
+
                 net.train()  # resume train
 
                 tmp_out = 0
@@ -522,7 +533,8 @@ def valid(net, valid_dataloaders, valid_datasets, hypar, epoch=0):
 
 def main(train_datasets,
          valid_datasets,
-         hypar): # model: "train", "test"
+         hypar,
+         writer: SummaryWriter): # model: "train", "test"
 
     ### --- Step 1: Build datasets and dataloaders ---
     dataloaders_train = []
@@ -605,7 +617,8 @@ def main(train_datasets,
               valid_dataloaders,
               valid_datasets,
               hypar,
-              train_dataloaders_val, train_datasets_val)
+              train_dataloaders_val, train_datasets_val,
+              writer=writer)
     else:
         valid(net,
               valid_dataloaders,
@@ -757,6 +770,13 @@ if __name__ == "__main__":
     hypar["max_ite"] = 10000000 ## if early stop couldn't stop the training process, stop it by the max_ite_num
     hypar["max_epoch_num"] = 1000000 ## if early stop and max_ite couldn't stop the training process, stop it by the max_epoch_num
 
+    # TensorBoard writer
+    writer = SummaryWriter()
+
     main(train_datasets,
          valid_datasets,
-         hypar=hypar)
+         hypar=hypar,
+         writer=writer)
+    
+    # Close the writer
+    writer.close()
