@@ -2,6 +2,7 @@ import os
 import time
 import numpy as np
 from skimage import io
+from PIL import Image
 import time
 from glob import glob
 from tqdm import tqdm
@@ -17,9 +18,11 @@ from models import *
 
 
 if __name__ == "__main__":
-    dataset_path="../demo_datasets/your_dataset"  #Your dataset path
-    model_path="../saved_models/IS-Net/isnet-general-use.pth"  # the model path
-    result_path="../demo_datasets/your_dataset_result"  #The folder path that you want to save the results
+    dataset_path="../demo_datasets/my_humans_loose_dataset"  #Your dataset path
+    # model_path="../saved_models/IS-Net-test/isnet-general-use.pth"  # the model path
+    # model_path="../saved_models/IS-Net-test/gpu_itr_2000_traLoss_0.2408_traTarLoss_0.0322_valLoss_0.1935_valTarLoss_0.0247_maxF1_0.9918_mae_0.0096_time_0.017195.pth"  # the model path
+    model_path="../saved_models/IS-Net-test/gpu_itr_36000_traLoss_0.0822_traTarLoss_0.0097_valLoss_0.1748_valTarLoss_0.0232_maxF1_0.9939_mae_0.0056_time_0.017047.pth"  # the model path
+    result_path="../demo_datasets/my_humans_losse_result_36000"  #The folder path that you want to save the results
     input_size=[1024,1024]
     net=ISNetDIS()
 
@@ -34,6 +37,9 @@ if __name__ == "__main__":
         for i, im_path in tqdm(enumerate(im_list), total=len(im_list)):
             print("im_path: ", im_path)
             im = io.imread(im_path)
+            # print(f"im shape: {im.shape}")
+            # print(f"pil shape: {np.asarray(Image.open(im_path)).shape}")
+            # break
             if len(im.shape) < 3:
                 im = im[:, :, np.newaxis]
             im_shp=im.shape[0:2]
@@ -50,4 +56,8 @@ if __name__ == "__main__":
             mi = torch.min(result)
             result = (result-mi)/(ma-mi)
             im_name=im_path.split('/')[-1].split('.')[0]
-            io.imsave(os.path.join(result_path,im_name+".png"),(result*255).permute(1,2,0).cpu().data.numpy().astype(np.uint8))
+            print((result*255).permute(1,2,0).cpu().data.numpy().squeeze().astype(np.uint8).shape)
+            im = Image.fromarray((result*255).permute(1,2,0).cpu().data.numpy().squeeze().astype(np.uint8))
+            im = im.convert('RGBA')
+            im.save(os.path.join(result_path,im_name+".png"))
+            # io.imsave(os.path.join(result_path,im_name+".png"), (result*255).permute(1,2,0).cpu().data.numpy().astype(np.uint8))
