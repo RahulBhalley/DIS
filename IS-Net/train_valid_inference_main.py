@@ -739,7 +739,7 @@ if __name__ == "__main__":
     ## "valid": for validation and inferening,
     ## in "valid" mode, it will calculate the accuracy as well as save the prediciton results into the "hypar["valid_out_dir"]", which shouldn't be ""
     ## otherwise only accuracy will be calculated and no predictions will be saved
-    hypar["interm_sup"] = False ## in-dicate if activate intermediate feature supervision
+    hypar["interm_sup"] = True ## in-dicate if activate intermediate feature supervision
 
     if hypar["mode"] == "train":
         hypar["valid_out_dir"] = "" ## for "train" model leave it as "", for "valid"("inference") mode: set it according to your local directory
